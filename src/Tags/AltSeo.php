@@ -221,8 +221,8 @@ class AltSeo extends Tags
         }
 
         // If the image is an absolute URL (e.g., S3), use it as is
-        if (preg_match('/^https?:\/\//', $image)) {
-            $imageURL = $image;
+        if (preg_match('/^https?:\/\//', $imageURL)) {
+            return $imageURL;
         } else {
             // Check if Statamic is configured to use S3 or local assets
             $assetContainer = \Statamic\Facades\AssetContainer::findByHandle('assets');
