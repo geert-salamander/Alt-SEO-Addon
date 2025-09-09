@@ -73,7 +73,7 @@ class AltSeo extends Tags
             'og_image' => $this->getSocialImage(),
 
             'twitter_card' => 'summary_large_image',
-            'twitter_domain' => $this->context->value('site:url'),
+            'twitter_domain' => $this->context->value('site')->url,
             'twitter_url' => $this->getCanonical(),
             'twitter_title' => $this->getSocialTitle(),
             'twitter_description' => strip_tags($this->getSocialDescription()),
@@ -89,7 +89,7 @@ class AltSeo extends Tags
      */
     public function replaceVars($string){
         $blueprintPageTitle = $this->context->value('title'); // Page Title
-        $appName = $this->context->value('site:name'); // App Name
+        $appName = $this->context->value('site')->name; // App Name
         $string = str_replace('{title}', $blueprintPageTitle, $string);
         $string = str_replace('{site_name}', $appName, $string);
         return $string;
@@ -112,7 +112,7 @@ class AltSeo extends Tags
             return $this->replaceVars($title);
         }
 
-        return $this->context->value('title') . ' | ' . $this->context->value('site:name');
+        return $this->context->value('title') . ' | ' . $this->context->value('site')->name;
     }
 
     /**
@@ -168,7 +168,7 @@ class AltSeo extends Tags
             return $this->replaceVars($title);
         }
 
-        return $this->context->value('title') . ' | ' . $this->context->value('site:name');
+        return $this->context->value('title') . ' | ' . $this->context->value('site')->name;
     }
 
     /**
@@ -219,7 +219,7 @@ class AltSeo extends Tags
                 $imageURL = str_replace('/assets/', '', $image);
             }
         }
-        $appUrl = $this->context->value('site:url');
+        $appUrl = $this->context->value('site')->url;
         if(!empty($imageURL) && !str_contains($imageURL, $appUrl)) {
             $imageURL = $appUrl . '/assets/' . $imageURL;
         }
