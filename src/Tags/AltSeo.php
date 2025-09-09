@@ -211,18 +211,33 @@ class AltSeo extends Tags
     {
         $imageURL = '';
         if(!empty($this->context->value('alt_seo_social_image'))) {
-            $imageURL =  str_replace('/assets/', '', Antlers::parse($this->context->value('alt_seo_social_image')));
+            $imageURL =  Antlers::parse($this->context->value('alt_seo_social_image'));
         } else {
             $data = new Data('settings');
             if($data->get('alt_seo_social_image_default')) {
                 $image = $data->get('alt_seo_social_image_default');
+                $imageURL = $image;
+            }
+        }
+
+        // If the image is an absolute URL (e.g., S3), use it as is
+        if (preg_match('/^https?:\/\//', $image)) {
+            $imageURL = $image;
+        } else {
+            // Check if Statamic is configured to use S3 or local assets
+            $assetContainer = \Statamic\Facades\AssetContainer::findByHandle('assets');
+            $disk = $assetContainer ? $assetContainer->disk() : null;
+            $assetBaseUrl = $assetContainer ? $assetContainer->url() : null;
+
+            if ($disk && $assetBaseUrl && !empty($image)) {
+                // Remove leading slash if present
+                $image = ltrim($image, '/');
+                $imageURL = rtrim($assetBaseUrl, '/') . '/' . $image;
+            } else {
                 $imageURL = str_replace('/assets/', '', $image);
             }
         }
-        $appUrl = $this->context->value('site')->url;
-        if(!empty($imageURL) && !str_contains($imageURL, $appUrl)) {
-            $imageURL = $appUrl . '/assets/' . $imageURL;
-        }
+        
         return $imageURL;
     }
 
