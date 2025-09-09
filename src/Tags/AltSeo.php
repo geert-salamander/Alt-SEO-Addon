@@ -229,12 +229,12 @@ class AltSeo extends Tags
             $disk = $assetContainer ? $assetContainer->disk() : null;
             $assetBaseUrl = $assetContainer ? $assetContainer->url() : null;
 
-            if ($disk && $assetBaseUrl && !empty($image)) {
+            if ($disk && $assetBaseUrl && !empty($imageURL)) {
                 // Remove leading slash if present
-                $image = ltrim($image, '/');
-                $imageURL = rtrim($assetBaseUrl, '/') . '/' . $image;
+                $imageURL = ltrim($imageURL, '/');
+                $imageURL = rtrim($assetBaseUrl, '/') . '/' . $imageURL;
             } else {
-                $imageURL = str_replace('/assets/', '', $image);
+                $imageURL = str_replace('/assets/', '', $imageURL);
             }
         }
         
